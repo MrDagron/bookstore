@@ -1,14 +1,18 @@
 package net.sirdagron.bookstore.domain.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import net.sirdagron.bookstore.domain.enums.UserRole;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Types;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +20,7 @@ import java.util.UUID;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcType(VarcharJdbcType.class)
     private UUID id;
     @Column(unique = true, nullable = false, length = 45)
     private String username;
@@ -24,18 +29,23 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(name="is_locked")
-    private boolean isLocked;
-    @ManyToMany
-    private Set<Role> roles;
+    private Boolean isLocked;
+    private Boolean isEnabled;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
     public User() {}
-    public User(String username, String password, String email, boolean isLocked) {
+    public User(String username, String password, boolean isLocked, boolean isEnabled, UserRole userRole) {
         this.username = username;
         this.password = password;
         this.isLocked = isLocked;
+        this.isEnabled = isEnabled;
+        this.email = username;
+        this.userRole = userRole;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(authority);
     }
 
     @Override
@@ -65,25 +75,33 @@ public class User implements UserDetails {
     }
     @Override
     public boolean isAccountNonLocked() {
-        return isLocked;
+        return !isLocked;
     }
     public void setLocked(boolean isLocked) {
         this.isLocked = isLocked;
     }
     @Override
     public boolean isCredentialsNonExpired() {
-        //todo: actual logic
         return true;
     }
     @Override
     public boolean isEnabled() {
-        //todo: actual logic
-        return true;
+        return isEnabled;
     }
-    public Set<Role> getRoles() {
-        return roles;
+
+    public UserRole getUserRole() {
+        return userRole;
     }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
     }
 }

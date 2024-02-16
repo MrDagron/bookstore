@@ -4,34 +4,42 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import net.sirdagron.bookstore.domain.dto.UserDto;
 import net.sirdagron.bookstore.domain.entities.User;
+import net.sirdagron.bookstore.services.RegistrationService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 @RequestMapping("/user")
 public class RegistrationController {
-    public RegistrationController()
+    private final RegistrationService registrationService;
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
     @GetMapping("/register")
-    public String getRegistrationForm(WebRequest request, Model model) {
+    public ModelAndView getRegistrationForm() {
         UserDto userDto = new UserDto();
-        model.addAttribute("user", userDto);
-        return "register";
+        return new ModelAndView("register", "user", userDto);
     }
     @PostMapping("/register")
-    public ModelAndView registerUserForm(@ModelAttribute("user") @Valid UserDto userDto,
-        HttpServletRequest request, Errors errors) {
-        try {
-            User registered = userService.registerNewUserAccount(userDto);
-        } catch (UserAlreadyExistsException e) {
-            ModelAndView mav = new ModelAndView("register", "user", userDto);
-            mav.addObject("message", "An account with that username/email already exists.");
-            return mav;
+    public ModelAndView registerUser(@Valid @ModelAttribute UserDto userDto, BindingResult result, ModelMap model) {
+        if(result.hasErrors()) {
+            return new ModelAndView("register", model);
         }
-        return new ModelAndView("successRegister", "user", userDto);
+        try {
+            String regUser = registrationService.register(userDto);
+            ModelMap modelMap = new ModelMap();
+            modelMap.addAttribute("email", regUser);
+            return new ModelAndView("welcome", modelMap);
+
+        } catch (IllegalStateException ex) {
+            //todo: log
+            return new ModelAndView("error");
+        }
     }
 }

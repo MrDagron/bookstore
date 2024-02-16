@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import net.sirdagron.bookstore.annotations.ValidationAnnotations;
 @ValidationAnnotations.PasswordMatches
 public class UserDto {
-    @NotNull
-    @NotEmpty
-    private String username;
     @ValidationAnnotations.ValidEmail
     @NotNull
     @NotEmpty
@@ -16,14 +13,6 @@ public class UserDto {
     @NotEmpty
     private String password;
     private String matchingPassword;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmail() {
         return email;
@@ -45,7 +34,7 @@ public class UserDto {
         return matchingPassword;
     }
 
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
-    }
+   public void setMatchingPassword(String matchingPassword) {
+       this.matchingPassword = matchingPassword;
+   }
 }
