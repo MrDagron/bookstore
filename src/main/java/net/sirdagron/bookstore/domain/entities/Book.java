@@ -60,4 +60,10 @@ public class Book {
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
+    public void addAuthor(Author author) {
+        authors.add(author);
+    }
+    public void removeAuthor(Author author) {
+        authors.remove(author);
+    }
 }

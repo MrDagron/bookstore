@@ -24,6 +24,13 @@ public class Author {
             joinColumns = @JoinColumn(name="book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name="author_id", referencedColumnName = "id"))
     private List<Book> books;
+    public Author() {}
+    public Author(String firstName, String lastName, String middleName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -62,6 +69,12 @@ public class Author {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+    public void addBook(Book book) {
+        books.add(book);
+    }
+    public void removeBook(Book book) {
+        books.remove(book);
     }
     //todo: more info about author
 }
