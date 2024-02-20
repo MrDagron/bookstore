@@ -1,6 +1,8 @@
 package net.sirdagron.bookstore.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import net.sirdagron.bookstore.domain.enums.UserRole;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.Type;
@@ -22,15 +24,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcType(VarcharJdbcType.class)
     private UUID id;
+    @Setter
     @Column(unique = true, nullable = false, length = 45)
     private String username;
+    @Setter
     @Column(nullable = false)
     private String password;
+    @Setter
+    @Getter
     @Column(nullable = false, unique = true)
     private String email;
     @Column(name="is_locked")
+    @Setter
     private Boolean isLocked;
+    @Setter
     private Boolean isEnabled;
+    @Setter
+    @Getter
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     public User() {}
@@ -47,26 +57,13 @@ public class User implements UserDetails {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
         return Collections.singletonList(authority);
     }
-
     @Override
     public String getPassword() {
         return password;
     }
-    public void setPassword(String password) {
-        this.password = password;
-    }
     @Override
     public String getUsername() {
         return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
     }
     @Override
     public boolean isAccountNonExpired() {
@@ -77,9 +74,6 @@ public class User implements UserDetails {
     public boolean isAccountNonLocked() {
         return !isLocked;
     }
-    public void setLocked(boolean isLocked) {
-        this.isLocked = isLocked;
-    }
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -87,21 +81,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
-
-    public Boolean getEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
     }
 }

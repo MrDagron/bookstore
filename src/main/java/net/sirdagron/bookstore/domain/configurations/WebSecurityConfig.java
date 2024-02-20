@@ -22,8 +22,14 @@ public class WebSecurityConfig {
         httpSecurity
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((requests) ->
-                requests.requestMatchers("/", "/user/register", "/user/api/v1/**").permitAll()
-                        .anyRequest().authenticated())
+                requests.requestMatchers(
+                        "/",
+                        "/user/register",
+                        "/user/api/v1/**",
+                        "/author/**")//todo: remove
+                            .permitAll()
+                            .anyRequest()
+                            .authenticated())
                     .formLogin((form) ->
                         form.loginPage("/login")
                             .permitAll())

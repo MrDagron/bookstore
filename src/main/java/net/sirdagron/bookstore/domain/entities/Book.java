@@ -1,13 +1,21 @@
 package net.sirdagron.bookstore.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import net.sirdagron.bookstore.domain.dto.BookDto;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import java.util.List;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -15,55 +23,25 @@ public class Book {
     private UUID id;
     private String title;
     private String isbn;
+    private int version;
     @ManyToMany(mappedBy = "books")
     private List<Author> authors;
     @ManyToOne
     @JoinColumn(name="publisher_id")
     private Publisher publisher;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
+    public Book(String title, String isbn, int version) {
         this.title = title;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
-
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+        this.version = version;
     }
     public void addAuthor(Author author) {
         authors.add(author);
     }
     public void removeAuthor(Author author) {
         authors.remove(author);
+    }
+    public static Book fromDto(BookDto bookDto) {
+        return new Book(bookDto.getTitle(), bookDto.getIsbn(), bookDto.getVersion());
     }
 }
