@@ -1,0 +1,45 @@
+CREATE TABLE application_user(
+    id VARCHAR(40) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(80) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    isLocked TINYINT(1),
+    isEnabled TINYINT(1),
+    userRole VARCHAR(25),
+    PRIMARY KEY (id)
+)ENGINE=INNODB;
+CREATE TABLE author(
+    id VARCHAR(40) NOT NULL UNIQUE,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+)ENGINE=INNODB;
+CREATE TABLE publisher(
+    id VARCHAR(40) NOT NULL UNIQUE,
+    publisher_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+)ENGINE=INNODB;
+CREATE TABLE book(
+    id VARCHAR(40) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    isbn VARCHAR(255) NOT NULL,
+    publisher_id VARCHAR(40),
+    INDEX pub_index (publisher_id),
+    FOREIGN KEY (publisher_id)
+        REFERENCES publisher(id)
+        ON DELETE NO ACTION,
+    PRIMARY KEY (id)
+)ENGINE=INNODB;
+CREATE TABLE book_author(
+    no INT NOT NULL AUTO_INCREMENT,
+    book_id VARCHAR(40) NOT NULL,
+    author_id VARCHAR(40) NOT NULL,
+    PRIMARY KEY (no),
+    INDEX (book_id),
+    INDEX (author_id),
+    FOREIGN KEY (book_id)
+        REFERENCES book(id),
+    FOREIGN KEY (author_id)
+        REFERENCES author(id)
+);

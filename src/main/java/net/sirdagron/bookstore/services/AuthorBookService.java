@@ -25,7 +25,7 @@ public class AuthorBookService {
             throws IllegalStateException {
         Collection<Book> bookList = null;
         //check if we have books to add
-        if(!author.getBooks().isEmpty()) {
+        if(author.getBooks() != null && !author.getBooks().isEmpty()) {
             //delegate book creation to book service
             bookList = bookService.createBooks(author.getBooks());
         }

@@ -18,9 +18,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @JdbcType(VarcharJdbcType.class)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
     private String isbn;
     private int version;

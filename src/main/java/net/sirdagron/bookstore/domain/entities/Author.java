@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.UUIDJdbcType;
+import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,9 +15,8 @@ import java.util.UUID;
 @Entity
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @JdbcType(UUIDJdbcType.class)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name="first_name")
     private String firstName;
     @Column(name="last_name")

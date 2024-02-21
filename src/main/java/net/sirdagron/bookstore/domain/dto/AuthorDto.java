@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class AuthorDto {
     @NotNull
     @NotEmpty
@@ -19,7 +21,6 @@ public class AuthorDto {
     @NotEmpty
     private String lastName;
     @NotNull
-    @NotEmpty
     private String middleName;
     private Collection<BookDto> books;
 
