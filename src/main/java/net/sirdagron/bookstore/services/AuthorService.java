@@ -23,7 +23,7 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public UUID createAuthor(String firstName, String lastName, String middleName, @Nullable Collection<Book> books)
+    public Long createAuthor(String firstName, String lastName, String middleName, @Nullable Collection<Book> books)
         throws IllegalStateException {
         //Check if author exists
         boolean authorExists = authorRepository.findAuthorByFirstNameAndLastNameAndMiddleName(
