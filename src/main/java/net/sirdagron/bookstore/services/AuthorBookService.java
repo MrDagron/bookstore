@@ -21,7 +21,7 @@ public class AuthorBookService {
         this.authorService = authorService;
         this.bookService = bookService1;
     }
-    public Long createAuthor(AuthorDto author)
+    public UUID createAuthor(AuthorDto author)
             throws IllegalStateException {
         Collection<Book> bookList = null;
         //check if we have books to add

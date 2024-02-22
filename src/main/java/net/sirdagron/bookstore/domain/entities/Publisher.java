@@ -16,8 +16,8 @@ import java.util.UUID;
 @Table(name="publisher")
 public class Publisher {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
     @Column(name="publisher_name")
     private String publisherName;
     @OneToMany(mappedBy = "publisher")
