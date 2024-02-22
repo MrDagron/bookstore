@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class BookDto {
-    private String title;
-    private String isbn;
-    private int version;
+public class PublisherDto {
+    private String publisherName;
+
 }

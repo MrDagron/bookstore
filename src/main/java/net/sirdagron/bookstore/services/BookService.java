@@ -15,6 +15,10 @@ public class BookService {
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
+    public UUID createBook(BookDto bookDto) {
+        Book book = Book.fromDto(bookDto);
+        return bookRepository.save(book).getId();
+    }
     public Collection<Book> createBooks(Collection<BookDto> booksDto) {
         Collection<Book> books = booksDto
                 .stream()

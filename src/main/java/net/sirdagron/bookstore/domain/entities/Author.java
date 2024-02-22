@@ -3,6 +3,7 @@ package net.sirdagron.bookstore.domain.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.sirdagron.bookstore.domain.dto.AuthorDto;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.UUIDJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
@@ -35,7 +36,9 @@ public class Author {
         this.lastName = lastName;
         this.middleName = middleName;
     }
-
+    public static Author fromDto(AuthorDto authorDto) {
+        return new Author(authorDto.getFirstName(), authorDto.getLastName(), authorDto.getMiddleName());
+    }
     public void addBook(Book book) {
         books.add(book);
     }
