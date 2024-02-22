@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @SpringBootTest
 public class AuthorBookServiceTests {
@@ -19,9 +20,9 @@ public class AuthorBookServiceTests {
     private AuthorBookService authorBookService;
     @Test
     public void createAuthorWithoutBooks_thenReturnId() {
+        Pattern pattern = Pattern.compile("^0{8}-0{4}-0{4}-0{4}-0{12}$");
         AuthorDto author = new AuthorDto("Bob", "Jones", "Alexander",null);
         UUID authorId = authorBookService.createAuthor(author);
-        Assert.notNull(authorId, "Author Id is null");
+        Assert.isTrue(!pattern.matcher(authorId.toString()).matches(), "Author Id is blank");
     }
-
 }
